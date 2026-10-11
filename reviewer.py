@@ -36,7 +36,7 @@ for file in pr.get_files():
         diff_text += f"\n--- File: {file.filename} ---\n{file.patch}\n"
 
 if not diff_text.strip():
-    print("No relevant code additions or modifications found.")
+    prinrt("No relevant code additions or modifications found.")
     sys.exit(0)
 
 prompt = f"""
@@ -49,8 +49,9 @@ Git Diff:
 """
 
 # Generate Review using Gemini 2.5 Flash
+# Change this line:
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.8-flash",
     contents=prompt,
 )
 
