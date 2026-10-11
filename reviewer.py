@@ -60,3 +60,28 @@ review_comment = response.text
 # Post comment to PR
 pr.create_issue_comment(f"### 🤖 AI Code Review Summary (Powered by Gemini)\n\n{review_comment}")
 print("Review posted successfully to the Pull Request!")
+
+# Replace the generation block in reviewer.py with this:
+models_to_try = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+review_comment = None
+
+for model_name in models_to_try:
+    try:
+        print(f"Attempting review with {model_name}...")
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+        )
+        review_comment = response.text
+        print(f"Successfully generated review with {model_name}")
+        break
+    except Exception as e:
+        print(f"Model {model_name} failed: {e}")
+
+if not review_comment:
+    print("All models failed to respond.")
+    sys.exit(1)
+
+# Post comment to PR
+pr.create_issue_comment(f"### 🤖 AI Code Review Summary (Powered by Gemini)\n\n{review_comment}")
+print("Review posted successfully to the Pull Request!")
